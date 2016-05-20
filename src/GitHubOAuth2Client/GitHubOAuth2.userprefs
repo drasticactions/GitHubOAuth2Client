@@ -1,5 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="GitHubOAuth2/GitHubOAuth2Client.cs">
+    <Files>
+      <File FileName="GitHubOAuth2/GitHubOAuth2Client.cs" Line="62" Column="124" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
