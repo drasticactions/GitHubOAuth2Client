@@ -3,11 +3,15 @@ namespace JohnnyCode.GitHubOAuth2
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 	using System.Web;
 	using DotNetOpenAuth.AspNet.Clients;
 	using DotNetOpenAuth.Messaging;
 	using Newtonsoft.Json;
 	using Newtonsoft.Json.Linq;
+	using Ramone.Utility;
+	using Ramone.MediaTypes;
+	using System.Diagnostics;
 
 	/// <summary>
 	/// OAuth2 Client for Github
@@ -33,9 +37,19 @@ namespace JohnnyCode.GitHubOAuth2
 		private const string UserEndpoint = "https://api.github.com/user";
 
 		/// <summary>
-		/// The user endpoint.
+		/// The orgs endpoint.
 		/// </summary>
 		private const string OrgsEndpoint = "https://api.github.com/user/orgs";
+
+		/// <summary>
+		/// The teams endpoint.
+		/// </summary>
+		private const string UserTeamsEndpoint = "https://api.github.com/user/teams";
+
+		/// <summary>
+		/// The userTeams endpoint.
+		/// </summary>
+		private const string OrgTeamEndpoint = "https://api.github.com/user/orgs/{0}/teams";
 
 		/// <summary>
 		/// The _app id.
@@ -91,12 +105,57 @@ namespace JohnnyCode.GitHubOAuth2
 
 		public dynamic GetOrganizations(string accessToken)
 		{
-			using (var client = new ExtendedWebClient(_userAgent))
+			return GetResult(OrgsEndpoint + "?access_token=" + accessToken);
+		}
+
+		public dynamic GetUserTeams(string accessToken)
+		{
+			return GetResult(UserTeamsEndpoint + "?access_token=" + accessToken);
+		}
+
+		public dynamic GetTeams(string org, string accessToken)
+		{
+			return GetResult(string.Format(OrgTeamEndpoint, org) + "?access_token=" + accessToken);
+		}
+
+	    dynamic GetResult(string url)
+		{
+			var hasMoreData = true;
+			var jsonArray = new JArray();
+			while (hasMoreData)
 			{
-				var data = client.DownloadString(OrgsEndpoint + "?access_token=" + accessToken);
-				dynamic jsonResult = JArray.Parse(data);
-				return jsonResult;
+				var data = "";
+				var link = "";
+				using (var client = new ExtendedWebClient(_userAgent))
+				{
+				 	data = client.DownloadString(url);
+					link = client.ResponseHeaders["Link"];
+				}
+
+				jsonArray.AddRange(JArray.Parse(data));
+				if (string.IsNullOrEmpty(link))
+				{
+					hasMoreData = false;
+				}
+				else
+				{
+					url = NextUrl(link);
+					hasMoreData = !string.IsNullOrEmpty(url);
+				}
 			}
+			return jsonArray;
+		}
+
+		string NextUrl(string linkHeader)
+		{
+			var links = WebLinkParser.ParseLinks(new Uri("https://api.github.com"), linkHeader);
+			var next = links.FirstOrDefault(node => node.RelationType.ToLower() == "next");
+			if (next != null)
+			{
+				return next.HRef.ToString();
+			}
+
+			return "";
 		}
 
 		/// <summary>

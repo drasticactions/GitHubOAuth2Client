@@ -1,14 +1,28 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workbench ActiveDocument="GitHubOAuth2/GitHubOAuth2Client.cs">
     <Files>
-      <File FileName="GitHubOAuth2/GitHubOAuth2Client.cs" Line="62" Column="124" />
+      <File FileName="GitHubOAuth2/ExtendedWebClient.cs" Line="14" Column="16" />
+      <File FileName="GitHubOAuth2/GitHubOAuth2Client.cs" Line="130" Column="23" />
+      <File FileName="GitHubOAuth2.Tests/GitHubOAuth2ClientTests.cs" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="GitHubOAuth2" expanded="True">
+            <Node name="GitHubOAuth2" expanded="True">
+              <Node name="GitHubOAuth2Client.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
   <DisabledProjects>
     <String>GitHubOAuth2.Tests/GitHubOAuth2.Tests.csproj</String>
   </DisabledProjects>
